@@ -1,14 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dương Nguyễn</title>
-    <link rel="icon" href="https://res.cloudinary.com/djft4yohp/image/upload/v1771928272/logo_z7ozdk.png" type="image/jpeg" />
+    <title>Tùng Dương | Content Creator & Visual Storyteller Portfolio</title>
+    <meta name="description" content="Portfolio của Tùng Dương - Content Creator, Video Editor & VJ tại Hà Nội. Khám phá các dự án video ngắn, TVC quảng cáo và câu chuyện thị giác sáng tạo." />
+    
+    <link rel="icon" href="https://res.cloudinary.com/djft4yohp/image/upload/v1771928272/logo_z7ozdk.png" type="image/png" />
+
+    <!-- Google Fonts: Oswald & Dancing Script -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+    <!-- =========================================================
+         MÀN HÌNH CHỜ TẢI TRANG (CINEMATIC PRELOADER)
+         ========================================================= -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <svg viewBox="0 0 50 50" class="spinner-svg">
+                    <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="2.5"></circle>
+                </svg>
+                <div class="shutter-center"></div>
+            </div>
+
+            <div class="preloader-brand">
+                <h1 class="preloader-title">TÙNG DƯƠNG</h1>
+                <p class="preloader-subtitle">VISUAL STORYTELLER • PORTFOLIO</p>
+            </div>
+
+            <div class="preloader-bar-wrap">
+                <div class="preloader-bar">
+                    <div class="preloader-progress" id="preloaderProgress"></div>
+                </div>
+                <div class="preloader-status">
+                    <span class="preloader-label">INITIALIZING</span>
+                    <span class="preloader-percent" id="preloaderPercent">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
    <header class="navbar">
     <nav>
@@ -74,9 +110,6 @@
 
 </section>
 
-<!-- Thêm Font chữ: Oswald (Chữ in hoa đậm) và Dancing Script (Chữ viết tay) -->
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Oswald:wght@300;400;700&display=swap" rel="stylesheet">
-
 <!-- BẮT ĐẦU SECTION PORTFOLIO INTRO -->
 <section class="portfolio-intro" id="about">
     <div class="portfolio-container">
@@ -106,8 +139,8 @@
         <!-- CỘT 2: ẢNH CHÂN DUNG (CENTER) -->
         <div class="col-center">
             <div class="image-card">
-                <!-- Thay ảnh chân dung của bạn vào đây (nên dùng ảnh nền trong suốt PNG) -->
-                <img src="ảnh cv.png" alt="Portrait" class="portrait-img">
+                <!-- Ảnh chân dung -->
+                <img src="portrait.png" alt="Tùng Dương - Portrait" class="portrait-img">
             </div>
         </div>
 
@@ -235,7 +268,7 @@
      ========================================================= -->
 
 
-<section class="modern-cinema-section" id="my_project">
+<section class="modern-cinema-section" id="featured_projects">
     <div class="cinema-container">
         
         <!-- Header nhỏ -->
@@ -248,7 +281,7 @@
         <div class="video-row">
             
             <!-- 1. Video Dọc (Trái) -->
-            <div href="#" class="video-card portrait side">
+            <div class="video-card portrait side">
                 <video autoplay loop muted playsinline>
                     <source src="https://res.cloudinary.com/djft4yohp/video/upload/v1771925825/Ads_T4_2025_-_Ba%CC%89o_du%CC%9Bo%CC%9B%CC%83ng_990k_jc4slr.mp4" type="video/mp4">
                 </video>
@@ -258,7 +291,7 @@
             </div>
 
             <!-- 2. Video Ngang (Giữa - Lớn nhất) -->
-            <div href="#" class="video-card landscape center">
+            <div class="video-card landscape center">
                 <video autoplay loop muted playsinline>
                     <source src="https://res.cloudinary.com/djft4yohp/video/upload/v1771927397/TVC_STOCK_OK_duong_yxrphz.mov" type="video/mp4">
                 </video>
@@ -269,7 +302,7 @@
             </div>
 
             <!-- 3. Video Dọc (Phải) -->
-            <div href="#" class="video-card portrait side">
+            <div class="video-card portrait side">
                 <video autoplay loop muted playsinline>
                     <source src="https://res.cloudinary.com/djft4yohp/video/upload/v1771928249/sa%CC%81p_MENITEMS_ok_uv11fp.mp4" type="video/mp4">
                 </video>
@@ -282,13 +315,12 @@
     </div>
 </section>
 
-<section class="section-vertical-left" id="my_project">
+<section class="section-vertical-left" id="story">
     <div class="tvc-container">
         
         <!-- 1. Cột bên trái: Ảnh Dọc -->
         <div class="tvc-img-wrapper">
-            <!-- Thay đường dẫn ảnh của bạn vào src -->
-            <img src="Hailuo_Image_Hãy desgin lại ảnh này trở nên_454452483543326726.jpeg" alt="Project Thumbnail" class="portrait-img-project">
+            <img src="storyteller.jpeg" alt="Tùng Dương - Visual Storyteller" class="portrait-img-project">
         </div>
 
         <!-- 2. Cột bên phải: Nội dung Text (Design lại) -->
@@ -301,7 +333,7 @@
             <div class="separator-line"></div> <!-- Đường kẻ trang trí -->
 
             <p class="project-desc">
-            Xin chào, Mình Là Dương, 22 tuổi, đang theo đuổi công việc tại Hà Nội. Nếu cuộc đời là thước phim dài 1p, thì 22 giây đầu tiên sẽ là khoảnh khắc định hình bản thân. Và Mình đã có kinh nghiệm hơn 18 năm sống ở Hạ Long. Trong thời gian học hành thì mình luôn đặt câu hỏi Vậy rồi mình là ai và mình đang tìm kiếm điều gì. Và mình cũng có 1 đam mê to lớn với con đường kể chuyển bằng hình ảnh. Đó là niềm đam mê sở thích và cũng là những kĩ năng mà mình phải trau dồi để tiếp tục bước tiếp trên hành trình sau này. Xin chào mọi người, Mình là DƯƠNG và mình đang tìm kiếm hành trình rực rỡ tiếp theo của tuổi trẻ.
+            Xin chào, Mình Là Dương, 22 tuổi, đang theo đuổi công việc tại Hà Nội. Nếu cuộc đời là thước phim dài 1p, thì 22 giây đầu tiên sẽ là khoảnh khắc định hình bản thân. Và Mình đã có kinh nghiệm hơn 18 năm sống ở Hạ Long. Trong thời gian học hành thì mình luôn đặt câu hỏi Vậy rồi mình là ai và mình đang tìm kiếm điều gì. Và mình cũng có 1 đam mê to lớn với con đường kể chuyện bằng hình ảnh. Đó là niềm đam mê sở thích và cũng là những kĩ năng mà mình phải trau dồi để tiếp tục bước tiếp trên hành trình sau này. Xin chào mọi người, Mình là DƯƠNG và mình đang tìm kiếm hành trình rực rỡ tiếp theo của tuổi trẻ.
             </p>
             
             <a href="#contact" class="modern-btn">
@@ -389,7 +421,7 @@
                         <input type="text" id="name" placeholder="Full Name *" required>
                     </div>
                     <div class="form-group">
-                        <input type="subject" id="subject"placeholder="Subject *" required>
+                        <input type="text" id="subject" placeholder="Subject *" required>
                     </div>
                     <div class="form-group">
                         <textarea id="message" rows="4" placeholder="Your message..."></textarea>
@@ -403,8 +435,6 @@
 </section>
 <!-- KẾT THÚC SECTION CONTACT -->
 
-    <script src="script.js"></script>
-</body>
 <!-- BẮT ĐẦU FOOTER -->
 <footer class="site-footer">
     <div class="footer-container">
@@ -426,18 +456,18 @@
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z"/></svg>
                 </a>
                 
-                <!-- Facebook -->
-                <a href="https://www.tiktok.com/@duduongdadiet?is_from_webapp=1&sender_device=pc" target="_blank" class="social-box">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.15 5.96C15.21 5.96 16.12 6.04 16.12 6.04V8.51H15.01C13.77 8.51 13.38 9.28 13.38 10.07V12.06H16.16L15.72 14.96H13.38V21.96C18.16 21.21 21.82 17.06 21.82 12.06C21.82 6.53 17.32 2.04 12 2.04Z"/></svg>
+                <!-- TikTok Profile -->
+                <a href="https://www.tiktok.com/@duduongdadiet?is_from_webapp=1&sender_device=pc" target="_blank" class="social-box" title="TikTok">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.53,2C12.53,2 12.53,4.96 12.53,5.88C14.47,6.13 15.93,7.74 16.03,9.7H13C12.92,8.6 12.06,7.72 10.97,7.72H10.59V17.06C10.59,18.42 9.47,19.53 8.12,19.53C6.76,19.53 5.65,18.42 5.65,17.06C5.65,15.7 6.76,14.59 8.12,14.59C8.35,14.59 8.58,14.62 8.79,14.69V11.53C5.15,11.53 2.18,14.5 2.18,18.15C2.18,21.8 5.15,24.76 8.79,24.76C12.44,24.76 15.41,21.8 15.41,18.15V10.29C17.03,11.45 19.03,12.13 21.18,12.13V8.85C19.12,8.85 17.26,7.9 15.97,6.41C15.97,5.5 15.97,2 15.97,2H12.53Z" transform="translate(0, -2)"/></svg>
                 </a>
 
                 <!-- Instagram -->
-                <a href="https://www.instagram.com/duduongdadiet/" target="_blank" class="social-box">
+                <a href="https://www.instagram.com/duduongdadiet/" target="_blank" class="social-box" title="Instagram">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/></svg>
                 </a>
 
                 <!-- Zalo (Logo chữ Z) -->
-                <a href="https://zalo.me/0389639088" target="_blank" class="social-box zalo-box">
+                <a href="https://zalo.me/0389639088" target="_blank" class="social-box zalo-box" title="Zalo">
                     <span>Z</span>
                 </a>
             </div>
@@ -451,7 +481,7 @@
                 <li><a href="#about">About</a></li>
                 <li><a href="#my_project">Project</a></li>
                 <li><a href="#contact">Contact</a></li>
-                <li><a href="#">Product</a></li>
+                <li><a href="https://beacons.ai/duongnguye.ntd" target="_blank">Product</a></li>
             </ul>
         </div>
 
@@ -477,5 +507,7 @@
     </div>
 </footer>
 <!-- KẾT THÚC FOOTER -->
- 
+
+    <script src="script.js"></script>
+</body>
 </html>

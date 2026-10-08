@@ -1,23 +1,81 @@
+// =========================================================
+// 1. CINEMATIC PRELOADER CONTROLLER (MÀN HÌNH CHỜ HIỆU ỨNG TẢI TRANG)
+// =========================================================
+const preloader = document.getElementById("preloader");
+const preloaderProgress = document.getElementById("preloaderProgress");
+const preloaderPercent = document.getElementById("preloaderPercent");
+
+let progress = 0;
+let isResourceLoaded = false;
+let isFinished = false;
+
+// Cập nhật giao diện tiến trình %
+function updateProgress(value) {
+    if (preloaderProgress) preloaderProgress.style.width = value + "%";
+    if (preloaderPercent) preloaderPercent.textContent = Math.round(value) + "%";
+}
+
+// Bắt đầu chạy tiến trình đếm số mượt mà
+const progressInterval = setInterval(() => {
+    if (!isResourceLoaded) {
+        // Tăng tự nhiên lên tối đa 90% trong lúc chờ các tài nguyên nặng
+        if (progress < 90) {
+            progress += Math.random() * 7 + 3;
+            if (progress > 90) progress = 90;
+            updateProgress(progress);
+        }
+    } else {
+        // Khi toàn bộ tài nguyên (ảnh, css, script, media) đã sẵn sàng
+        progress += 15;
+        if (progress >= 100) {
+            progress = 100;
+            updateProgress(progress);
+            clearInterval(progressInterval);
+            finishLoading();
+        } else {
+            updateProgress(progress);
+        }
+    }
+}, 50);
+
+function finishLoading() {
+    if (isFinished) return;
+    isFinished = true;
+
+    // Giữ lại 300ms ở mức 100% để người xem thấy sự hoàn tất
+    setTimeout(() => {
+        // Kích hoạt animation xuất hiện trang web và trượt preloader
+        document.body.classList.add("loaded");
+
+        // Sau khi preloader trượt lên hoàn tất, ẩn hoàn toàn để giải phóng DOM
+        setTimeout(() => {
+            if (preloader) {
+                preloader.style.display = "none";
+            }
+            // Cho phép cuộn trang bình thường
+            document.body.style.overflow = "auto";
+        }, 900);
+    }, 300);
+}
+
+// Lắng nghe sự kiện window load (khi toàn bộ ảnh, css, scripts đã load xong)
+window.addEventListener("load", () => {
+    isResourceLoaded = true;
+});
+
+// Fallback an toàn: tối đa 3.5 giây sẽ mở trang ngay dù mạng chập chờn
+setTimeout(() => {
+    isResourceLoaded = true;
+}, 3500);
+
+
+// =========================================================
+// 2. HERO VIDEO & ÂM THANH
+// =========================================================
 const video = document.querySelector(".hero-video");
 const btn = document.getElementById("volumeBtn");
 
-document.addEventListener("DOMContentLoaded", function() {
-    // 1. KHÓA thao tác ngay khi web vừa load
-    const body = document.body;
-    
-    // Khóa cuộn trang (Scroll)
-    body.style.overflow = 'hidden'; 
-    // Khóa bấm chuột (Click) vào mọi thứ trên trang
-    body.style.pointerEvents = 'none';
-
-    // 2. MỞ KHÓA sau 3 giây (bằng đúng thời gian animation CSS)
-    setTimeout(() => {
-        body.style.overflow = 'auto';      // Cho phép cuộn lại
-        body.style.pointerEvents = 'auto'; // Cho phép bấm lại
-    }, 3000); // 3000 mili giây = 3 giây
-});
-
-// 1. Định nghĩa 2 Icon SVG (Nét mảnh, giống style Contact Me)
+// Định nghĩa 2 Icon SVG (Nét mảnh, tinh tế)
 const iconMute = `
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
@@ -31,26 +89,24 @@ const iconSound = `
         <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
     </svg>`;
 
-// 3. Đặt icon mặc định ban đầu (Mute)
-btn.innerHTML = iconMute;
+if (btn) {
+    btn.innerHTML = iconMute;
 
-// --- XỬ LÝ ÂM THANH VIDEO ---
+    // Sự kiện CLICK nút loa
+    btn.addEventListener('click', function() {
+        if (!video) return;
+        video.muted = !video.muted;
+        
+        if (video.muted) {
+            btn.innerHTML = iconMute;
+        } else {
+            btn.innerHTML = iconSound;
+            video.volume = 1; 
+        }
+    });
+}
 
-// 1. Sự kiện CLICK nút loa
-btn.addEventListener('click', function() {
-    video.muted = !video.muted; // Đảo ngược trạng thái
-    
-    if (video.muted) {
-        btn.innerHTML = iconMute;
-    } else {
-        btn.innerHTML = iconSound;
-        // QUAN TRỌNG: Phải reset âm lượng về 100% khi người dùng bật tiếng
-        // Nếu không có dòng này, volume vẫn bằng 0 do lúc lướt xuống đã bị giảm
-        video.volume = 1; 
-    }
-});
-
-// 2. Sự kiện SCROLL (Làm nhỏ dần tiếng khi lướt đi)
+// Tự động giảm âm lượng video khi cuộn trang ra xa
 window.addEventListener("scroll", () => {
     if (!video) return;
 
@@ -58,90 +114,95 @@ window.addEventListener("scroll", () => {
     const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
     const percentVisible = Math.max(0, Math.min(visibleHeight / rect.height, 1));
 
-    // Logic:
-    // Nếu video đang được bật tiếng (không mute) -> chỉnh volume theo độ hiển thị
-    // Điều này giúp tạo hiệu ứng Fade in/out khi lướt lên xuống
     if (!video.muted) {
         video.volume = percentVisible;
     }
 
-    // Nếu video bị khuất hoàn toàn (0%) -> Tự động Mute để tiết kiệm tài nguyên
     if (percentVisible <= 0 && !video.muted) {
         video.muted = true;
-        btn.innerHTML = iconMute;
+        if (btn) btn.innerHTML = iconMute;
     }
 });
 
-// 1. Lấy danh sách tất cả các nút trong menu
-const navLinks = document.querySelectorAll('.nav-link');
 
-// 2. Lặp qua từng nút để gán sự kiện click
+// =========================================================
+// 3. NAVBAR SCROLL SPY & CLICK
+// =========================================================
+const navLinks = document.querySelectorAll('.nav-link');
+const trackedSections = document.querySelectorAll('section');
+
 navLinks.forEach(link => {
-    link.addEventListener('click', function() {
-        
-        // Bước A: Xóa class 'active' ở TẤT CẢ các nút (để reset về màu xám)
-        navLinks.forEach(nav => nav.classList.remove('active'));
-        
-        // Bước B: Thêm class 'active' vào nút VỪA ĐƯỢC BẤM (để chuyển sang màu đen)
-        this.classList.add('active');
+    link.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            navLinks.forEach(nav => nav.classList.remove('active'));
+            this.classList.add('active');
+        }
     });
 });
-
-const sections = document.querySelectorAll('section');
 
 window.addEventListener('scroll', () => {
-    let current = '';
+    let currentId = '';
     
-    sections.forEach(section => {
+    trackedSections.forEach(section => {
         const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        // -150 là khoảng bù trừ cho chiều cao của thanh navbar cố định
-        if (pageYOffset >= (sectionTop - 150)) {
-            current = section.getAttribute('id');
+        if (window.pageYOffset >= (sectionTop - 180)) {
+            currentId = section.getAttribute('id');
         }
     });
+
+    // Map các section con về mục cha tương ứng trên navbar
+    let targetLink = currentId;
+    if (currentId === 'featured_projects' || currentId === 'story') {
+        targetLink = 'my_project';
+    }
 
     navLinks.forEach(link => {
-        link.classList.remove('active');
-        // So sánh href của link với id của section hiện tại
-        if (link.getAttribute('href').includes(current)) {
-            link.classList.add('active');
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+            if (href === '#' + targetLink) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
         }
     });
 });
 
-/* ---------------------------------------------- */
-    document.addEventListener("DOMContentLoaded", function() {
-        // Tạo một bộ theo dõi (Observer)
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // Nếu phần tử xuất hiện trong màn hình
-                if (entry.isIntersecting) {
-                    // Thêm class .active để kích hoạt CSS hiện lên
-                    entry.target.classList.add('active');
-                }
-            });
-        }, {
-            threshold: 0.1 // Chỉ cần hiện 10% là bắt đầu hiệu ứng
+
+// =========================================================
+// 4. HIỆU ỨNG HIỂN THỊ KHI CUỘN (SCROLL REVEAL)
+// =========================================================
+document.addEventListener("DOMContentLoaded", function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
         });
-
-        // Chọn tất cả các phần tử có class .reveal-item để theo dõi
-        const hiddenElements = document.querySelectorAll('.reveal-item');
-        hiddenElements.forEach((el) => observer.observe(el));
+    }, {
+        threshold: 0.1
     });
-/* --------add nội dung lên email */
 
-    document.getElementById("contact-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value;
-    const subject = document.getElementById("subject").value;
-    const message = document.getElementById("message").value;
-
-    const email = "tungduong9454@gmail.com"; // email của bạn
-
-    const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + "\n\n" + message)}`;
-
-    window.location.href = mailtoLink;
+    const hiddenElements = document.querySelectorAll('.reveal-item');
+    hiddenElements.forEach((el) => observer.observe(el));
 });
+
+
+// =========================================================
+// 5. XỬ LÝ LIÊN HỆ (CONTACT FORM)
+// =========================================================
+const contactForm = document.querySelector(".contact-form");
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value;
+        const subject = document.getElementById("subject").value;
+        const message = document.getElementById("message").value;
+        const email = "tungduong9454@gmail.com";
+
+        const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("From: " + name + "\n\n" + message)}`;
+        window.location.href = mailtoLink;
+    });
+}

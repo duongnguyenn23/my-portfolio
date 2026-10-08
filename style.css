@@ -4,6 +4,163 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+/* =========================================================
+   CINEMATIC PRELOADER (MÀN HÌNH CHỜ HIỆU ỨNG TẢI TRANG)
+   ========================================================= */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0b0c10; /* Màu đen điện ảnh */
+    z-index: 999999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.9s cubic-bezier(0.85, 0, 0.15, 1), opacity 0.6s ease;
+    will-change: transform, opacity;
+}
+
+/* Khi đã load xong toàn bộ: Preloader trượt lên trên như rèm chiếu phim */
+body.loaded .preloader {
+    transform: translateY(-100%);
+    pointer-events: none;
+}
+
+.preloader-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 24px;
+    max-width: 440px;
+    width: 90%;
+}
+
+/* Icon vòng quay Camera Shutter */
+.preloader-icon {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner-svg {
+    width: 100%;
+    height: 100%;
+    animation: rotatePreloader 2s linear infinite;
+}
+
+.spinner-path {
+    stroke: #ffffff;
+    stroke-linecap: round;
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: 0;
+    animation: dashPreloader 1.5s ease-in-out infinite;
+}
+
+.shutter-center {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes rotatePreloader {
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes dashPreloader {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -125;
+    }
+}
+
+/* Brand */
+.preloader-brand {
+    margin-bottom: 32px;
+}
+
+.preloader-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 700;
+    letter-spacing: 8px;
+    color: #ffffff;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.preloader-subtitle {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+}
+
+/* Thanh tiến trình Progress bar */
+.preloader-bar-wrap {
+    width: 100%;
+}
+
+.preloader-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 14px;
+}
+
+.preloader-progress {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ffffff, #dcdcdc);
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
+    transition: width 0.12s ease-out;
+}
+
+.preloader-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.preloader-percent {
+    font-weight: 700;
+    color: #ffffff;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Khóa cuộn trang khi chưa load xong */
+body:not(.loaded) {
+    overflow: hidden !important;
+}
+
 /* ---------Hiệu ứng lướt xuống hiện dần  */
 /* 1. Trạng thái ban đầu (Ẩn) */
 .reveal-item {
@@ -19,9 +176,6 @@
 }
 
 /* --- TÙY CHỈNH CHO CÁC PHẦN TỬ CỦA BẠN --- */
-/* (Code cũ của bạn giữ nguyên, chỉ cần thêm class .reveal-item vào HTML) */
-/* ----------------------------------------------------------------- */
-
 /* 1. Định nghĩa chuyển động thu nhỏ */
 @keyframes shrinkEffect {
     0% {
@@ -31,9 +185,9 @@
         height: 100vh; /* Giữ nguyên full màn hình trong khoảng 30% thời gian đầu (để người xem nhìn rõ) */
     }
     100% {
-        height: 40vh; /* Kết thúc: Thu nhỏ về kích thước banner (bạn có thể chỉnh số này) */
-        border-bottom-left-radius: 40px;  /* (Tuỳ chọn) Bo góc dưới cho đẹp */
-        border-bottom-right-radius: 40px; /* (Tuỳ chọn) Bo góc dưới cho đẹp */
+        height: 40vh; /* Kết thúc: Thu nhỏ về kích thước banner */
+        border-bottom-left-radius: 40px;
+        border-bottom-right-radius: 40px;
     }
 }
 
@@ -41,59 +195,39 @@
 @keyframes uiFadeIn {
     0% {
         opacity: 0;
-        transform: translateY(-20px); /* Dịch lên trên một chút để lúc hiện xuống sẽ đẹp hơn */
-        pointer-events: none; /* Không cho bấm khi chưa hiện */
+        transform: translateY(-20px);
+        pointer-events: none;
     }
     100% {
         opacity: 1;
         transform: translateY(0);
-        pointer-events: auto; /* Cho phép bấm lại */
+        pointer-events: auto;
     }
 }
-
 
 /* 2. Áp dụng vào Hero Section */
 .hero {
     position: relative;
     width: 100%;
-    height: 100vh;  /* Giá trị mặc định ban đầu */
+    height: 100vh;  /* Mặc định full màn hình khi chưa load */
     overflow: hidden;
     z-index: 999; 
     background-color: white; 
-    
-    /* Kích hoạt Animation */
-    /* 
-       - 2.5s: Tổng thời gian chạy (bao gồm cả lúc chờ)
-       - ease-in-out: Chuyển động mượt (nhanh dần rồi chậm dần)
-       - forwards: QUAN TRỌNG - Giữ nguyên trạng thái cuối cùng (không bị bật lại 100vh)
-       - 0.5s: (Tuỳ chọn) Thời gian delay trước khi bắt đầu chạy
-    */
-    /* animation: shrinkEffect 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: 0.5s;  */
-
-    cursor: pointer; /* Hiện bàn tay khi di chuột vào */
-
-    /* Kích hoạt Animation thu nhỏ lúc mới vào trang */
-    animation: shrinkEffect 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    animation-delay: 0.5s;
-
-    /* QUAN TRỌNG: Transition giúp lúc di chuột vào nó to ra mượt mà */
-     
+    cursor: pointer;
     transition: all 1.2s cubic-bezier(0.65, 0, 0.35, 1);
-    
-    /* Mẹo nhỏ: Giúp trình duyệt render mượt hơn, đỡ bị giật */
     will-change: height, border-radius;
+}
 
+/* CHỈ KÍCH HOẠT THU NHỎ KHI TRANG ĐÃ LOAD XONG */
+body.loaded .hero {
+    animation: shrinkEffect 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: 0.4s;
 }
 
 .hero:hover {
-    /* Khi chuột ở trong banner, ép độ cao về 100vh */
     height: 90vh !important; 
-    
-    /* Bỏ bo góc */
-    border-bottom-left-radius: 20 !important;
-    border-bottom-right-radius: 20 !important;
-    /* Thêm bóng đổ nhẹ để banner nổi lên trên nền */
+    border-bottom-left-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
 
@@ -164,11 +298,14 @@ html {
     justify-content: center;
     align-items: center;
     
-    /* --- SỬA ĐOẠN NÀY --- */
     opacity: 0;
-    /* Đổi tên animation thành navbarFadeIn */
+    pointer-events: none;
+}
+
+/* CHỈ HIỆN NAVBAR KHI TRANG ĐÃ LOAD XONG */
+body.loaded .navbar {
     animation: navbarFadeIn 1s ease forwards; 
-    animation-delay: 2.8s;
+    animation-delay: 2.2s;
 }
 
 .navbar nav ul {
@@ -1463,10 +1600,10 @@ html {
         100% { height: 40vh; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
     }
 
-    .hero {
-        /* Áp dụng animation mới */
+    body.loaded .hero {
+        /* Áp dụng animation mới khi đã load xong */
         animation: shrinkEffectMobile 2.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        animation-delay: 0.5s;
+        animation-delay: 0.4s;
     }
 
     .hero-content {
@@ -1718,5 +1855,3 @@ html {
     
     .contact-list li { align-items: center; } /* Căn giữa thông tin liên hệ */
 }
-
-

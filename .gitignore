@@ -1,0 +1,16 @@
+# System files
+.DS_Store
+
+# Large video assets (hosted on Cloudinary)
+260206_Man hinh Arzopa.v2.mp4
+Ads T4 2025 - Bảo dưỡng 990k.mp4
+TVC STOCK OK_duong.mov
+dynik 11 .mov
+mâm nhà.mov
+pickstar_duong2.mov
+sáp MENITEMS ok.mp4
+vlog bản thân.mp4
+
+# MacOS Unicode normalization duplicates
+Hailuo_Image*
+*cv.png
